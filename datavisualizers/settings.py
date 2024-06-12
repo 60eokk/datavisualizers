@@ -60,7 +60,7 @@ ROOT_URLCONF = 'datavisualizers.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [os.path.join(BASE_DIR, 'visualizer')],
+        'DIRS': [os.path.join(BASE_DIR, 'visualizer')], # fixed this to make templates work
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
