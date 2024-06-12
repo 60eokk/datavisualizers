@@ -1,12 +1,13 @@
+<!-- visualizer/templates/visualizer/result.html -->
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Visualization Result</title>
+    <title>Code Output</title>
 </head>
 <body>
-    <h1>Visualization Result</h1>
-    <!-- Display the result here; this could be an image, a video, or an interactive element -->
-    <div>{{ visualization }}</div>
+    <h1>Output of Your Code</h1>
+    <pre>{{ output }}</pre>  <!-- Use <pre> for preformatted text -->
+    <a href="{% url 'visualize' %}">Try another code</a>
 </body>
 </html>
