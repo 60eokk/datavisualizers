@@ -8,6 +8,7 @@ from django.http import HttpResponse
 
 
 def visualize(request):
+    # return HttpResponse("HIHI")
     if request.method == 'POST':
         code = request.POST.get('code')
 
