@@ -8,10 +8,9 @@ from django.http import HttpResponse
 
 
 def visualize(request):
-    # return HttpResponse("HIHI")
     if request.method == 'POST':
         code = request.POST.get('code')
-
         visualization_result = process_code(code)
-        return render(request, 'result.html', {'visualization': visualization_result})
-    return render(request, 'visualize.html')
+        return render(request, 'datavisualizer/visualizer/result.html', {'visualization': visualization_result})
+    return render(request, 'datavisualizer/visualizer/visualize.html')
+    # return HttpResponse("HIHI")
