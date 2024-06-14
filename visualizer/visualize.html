@@ -3,13 +3,26 @@
 <head>
     <meta charset="UTF-8">
     <title>Code Visualizer</title>
+    <!-- Include Ace from CDN --> 
+    <!-- Ace Editor makes the input box more user friendly-->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/ace/1.4.12/ace.js" type="text/javascript" charset="utf-8"></script>
 </head>
 <body>
     <h1>Enter your code</h1>
-    <form method="POST" action="{% url 'visualize' %}">
+    <div id="editor" style="width: 500px; height: 200px;">print("Hello, world!")</div>
+    <script>
+        var editor = ace.edit("editor");
+        editor.setTheme("ace/theme/monokai");
+        editor.session.setMode("ace/mode/python");
+        editor.setOptions({
+            enableBasicAutocompletion: true,
+            enableLiveAutocompletion: true,
+        });
+    </script>
+    <form method="POST">
         {% csrf_token %}
-        <textarea name="code" rows="10" cols="50"></textarea><br>
-        <button type="submit">Visualize</button>
+        <textarea name="code" id="code" style="display:none;"></textarea>
+        <button type="submit" onclick="document.getElementById('code').value = editor.getSession().getValue();">Submit</button>
     </form>
 </body>
 </html>
