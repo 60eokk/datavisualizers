@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Code Visualizer</title>
+    <style>
+        body {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            margin: 0;
+            background-color: #272822; /* Dark background color */
+            color: #f8f8f2; /* Light text color */
+            font-family: Arial, sans-serif;
+        }
+        h1 {
+            font-size: 3em; /* Large font size */
+            font-weight: bold;
+            animation: glow 1.5s ease-in-out infinite alternate; /* Animated glowing effect */
+        }
+        @keyframes glow {
+            from { text-shadow: 0 0 10px #fff, 0 0 20px #fff, 0 0 30px #e60073, 0 0 40px #e60073, 0 0 50px #e60073, 0 0 60px #e60073, 0 0 70px #e60073; }
+            to { text-shadow: 0 0 20px #fff, 0 0 30px #ff4da6, 0 0 40px #ff4da6, 0 0 50px #ff4da6, 0 0 60px #ff4da6, 0 0 70px #ff4da6, 0 0 80px #ff4da6; }
+        }
+        .button {
+            padding: 10px 20px;
+            margin: 10px;
+            font-size: 1em;
+            font-weight: bold;
+            color: #272822;
+            background-color: #66D9EF;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+        .button:hover {
+            background-color: #66D9FF; /* Lighter blue when hovered */
+        }
+    </style>
+</head>
+<body>
+    <h1>Welcome to Code Visualizer!</h1>
+    <button class="button" onclick="location.href='/visualizer'">Go to Visualizer</button>
+    <button class="button" onclick="location.href='/polls'">Go to Polls</button>
+</body>
+</html>

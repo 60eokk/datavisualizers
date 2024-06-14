@@ -5,7 +5,8 @@ import subprocess # to execute code more safely
 import sys # import sys and use sys.executable to dynamically get the Python path
 
 def home(request):
-    return HttpResponse("Welcome to Code Visualizer!")
+    # return HttpResponse("Welcome to Code Visualizer!")
+    return render(request, 'home.html')
 
 def process_code(code):
     python_path = sys.executable  # Use the Python executable that's running the script
