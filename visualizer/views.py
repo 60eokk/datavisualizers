@@ -2,25 +2,26 @@ from django.shortcuts import render, redirect
 from django.http import HttpResponse
 from django.template.response import SimpleTemplateResponse
 import subprocess # to execute code more safely
+import sys # import sys and use sys.executable to dynamically get the Python path
 
 
 def process_code(code):
+    python_path = sys.executable  # Automatically gets the path of the current Python interpreter
     try:
-        # Execute code safely in a subprocess with limited rights
         completed_process = subprocess.run(
-            ["python", "-c", code],
+            [python_path, "-c", code],
             text=True,
             capture_output=True,
-            timeout=5,  # Set a reasonable timeout to prevent long-running scripts
-            check=True  # Raises CalledProcessError for non-zero exit statuses
+            timeout=5,
+            check=True
         )
         return completed_process.stdout
     except subprocess.CalledProcessError as e:
-        return f"An error occurred: {str(e)}"
+        return f"An error occurred: {e.stderr}"
     except subprocess.TimeoutExpired:
         return "The code execution timed out."
     except Exception as e:
-        return str(e)
+        return f"An unexpected error occurred: {str(e)}"
     
 
 
