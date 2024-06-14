@@ -6,14 +6,17 @@ import sys # import sys and use sys.executable to dynamically get the Python pat
 
 
 def process_code(code):
-    python_path = sys.executable  # Automatically gets the path of the current Python interpreter
+    python_path = sys.executable  # Use the Python executable that's running the script
     try:
         completed_process = subprocess.run(
             [python_path, "-c", code],
             text=True,
             capture_output=True,
-            timeout=5,
+            timeout=5
         )
+        # Check if there was an error
+        if completed_process.stderr:
+            return "Error:\n" + completed_process.stderr
         return completed_process.stdout
     except subprocess.CalledProcessError as e:
         return f"An error occurred: {e.stderr}"

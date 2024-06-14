@@ -7,44 +7,79 @@
     <style>
         body {
             display: flex;
+            flex-direction: column;
             margin: 0;
             height: 100vh;
-            padding: 20px;
+            padding: 0;
+            background-color: #272822; /* Monokai background color */
+            color: #f8f8f2; /* Monokai text color */
+        }
+        header {
+            height: 10%;
+            background-color: #272822; /* Monokai background color */
+            padding: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: space-around;
+            border: 1px solid black; /* Black border */
+        }
+        #mainContent {
+            display: flex;
+            flex: 1;
+            overflow: hidden;
+            padding: 10px 0; /* Padding for spacing around editor and output */
         }
         #editorContainer, #output {
             flex: 1;
             display: flex;
             flex-direction: column;
             margin: 0 10px;
+            overflow-y: auto;
+            border: 1px solid black; /* Black border */
+            background-color: #272822; /* Monokai background color */
         }
-        #editor {
-            height: 90vh;
+        #editor, #output {
+            flex: 1;
         }
         #output {
-            white-space: pre-wrap;
-            background-color: #f4f4f4;
-            border: 1px solid #ccc;
-            padding: 10px;
-            overflow-y: auto;
-            height: 90vh;
+            background-color: #272822; /* Monokai background color */
+            color: #f8f8f2; /* Monokai text color */
         }
         #executeButton {
             width: 100%;
             padding: 10px 0;
             font-size: 16px;
+            background-color: #66D9EF; /* Monokai blue color for buttons */
+            color: #272822; /* Monokai background color for text on button */
+            border: none;
+        }
+        a {
+            color: #66D9EF; /* Monokai blue color for links */
+            text-decoration: none;
         }
     </style>
 </head>
-<body>
-    <div id="editorContainer">
-        <div id="editor"></div>
-        <button id="executeButton" onclick="submitCode();">Execute</button>
+<body><body>
+    <header>
+        <a href="/home">Home</a>
+        <a href="/other">Other Site</a>
+    </header>
+    <div id="mainContent">
+        <div id="editorContainer">
+            <div id="editor"></div>
+            <button id="executeButton" onclick="submitCode();">Execute</button>
+        </div>
+        <form id="codeForm" method="POST" action="" style="display: none;">
+            {% csrf_token %}
+            <textarea name="code" id="code"></textarea>
+        </form>
+        <div id="output">{{ output }}</div>
     </div>
     <script>
         var editor = ace.edit("editor");
         editor.setTheme("ace/theme/monokai");
         editor.session.setMode("ace/mode/python");
-        editor.setValue("{{ code|escapejs }}");  // Load the submitted code back into the editor
+        editor.setValue("{{ code|escapejs }}");
         editor.clearSelection();
 
         function submitCode() {
@@ -52,10 +87,5 @@
             document.forms["codeForm"].submit();
         }
     </script>
-    <form id="codeForm" method="POST" action="" style="display: none;">
-        {% csrf_token %}
-        <textarea name="code" id="code"></textarea>
-    </form>
-    <div id="output">{{ output }}</div>
 </body>
 </html>
