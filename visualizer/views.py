@@ -13,7 +13,6 @@ def process_code(code):
             text=True,
             capture_output=True,
             timeout=5,
-            check=True
         )
         return completed_process.stdout
     except subprocess.CalledProcessError as e:
@@ -26,9 +25,10 @@ def process_code(code):
 
 
 def visualize(request):
+    output = ""
     if request.method == 'POST':
         code = request.POST.get('code')
         output = process_code(code)
-        return render(request, 'result.html', {'output': output})
-    return render(request, 'visualize.html')
+        # return render(request, 'result.html', {'output': output})
+    return render(request, 'visualize.html', {'output': output})
     
