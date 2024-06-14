@@ -25,10 +25,9 @@ def process_code(code):
 
 
 def visualize(request):
+    code = ""  # Default to empty if no POST request
     output = ""
     if request.method == 'POST':
         code = request.POST.get('code')
         output = process_code(code)
-        # return render(request, 'result.html', {'output': output})
-    return render(request, 'visualize.html', {'output': output})
-    
+    return render(request, 'visualize.html', {'code': code, 'output': output})

@@ -5,25 +5,57 @@
     <title>Code Visualizer</title>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/ace/1.4.12/ace.js" type="text/javascript" charset="utf-8"></script>
     <style>
-        #editor { width: 500px; height: 200px; }
-        #output { white-space: pre; background-color: #f4f4f4; border: 1px solid #ccc; padding: 10px; }
+        body {
+            display: flex;
+            margin: 0;
+            height: 100vh;
+            padding: 20px;
+        }
+        #editorContainer, #output {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            margin: 0 10px;
+        }
+        #editor {
+            height: 90vh;
+        }
+        #output {
+            white-space: pre-wrap;
+            background-color: #f4f4f4;
+            border: 1px solid #ccc;
+            padding: 10px;
+            overflow-y: auto;
+            height: 90vh;
+        }
+        #executeButton {
+            width: 100%;
+            padding: 10px 0;
+            font-size: 16px;
+        }
     </style>
 </head>
 <body>
-    <h1>Code Visualizer</h1>
-    <div id="editor">print("Hello, world!")</div>
+    <div id="editorContainer">
+        <div id="editor"></div>
+        <button id="executeButton" onclick="submitCode();">Execute</button>
+    </div>
     <script>
         var editor = ace.edit("editor");
         editor.setTheme("ace/theme/monokai");
         editor.session.setMode("ace/mode/python");
+        editor.setValue("{{ code|escapejs }}");  // Load the submitted code back into the editor
+        editor.clearSelection();
+
+        function submitCode() {
+            document.getElementById('code').value = editor.getSession().getValue();
+            document.forms["codeForm"].submit();
+        }
     </script>
-    <form method="POST" action="">
+    <form id="codeForm" method="POST" action="" style="display: none;">
         {% csrf_token %}
-        <textarea name="code" id="code" style="display:none;"></textarea>
-        <button type="submit" onclick="document.getElementById('code').value = editor.getSession().getValue();">Execute</button>
+        <textarea name="code" id="code"></textarea>
     </form>
-    {% if output %}
     <div id="output">{{ output }}</div>
-    {% endif %}
 </body>
 </html>
