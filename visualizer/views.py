@@ -4,6 +4,8 @@ from django.template.response import SimpleTemplateResponse
 import subprocess # to execute code more safely
 import sys # import sys and use sys.executable to dynamically get the Python path
 
+def home(request):
+    return HttpResponse("Welcome to Code Visualizer!")
 
 def process_code(code):
     python_path = sys.executable  # Use the Python executable that's running the script

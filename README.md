@@ -44,3 +44,11 @@ urlpatterns = [
 #####
 
 The include() function allows referencing other URLconfs.
+
+
+
+
+
+#####
+lsof -i :8000   (way to find port)
+kill -9 73505   (way to kill this port and restart)
