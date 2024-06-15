@@ -14,7 +14,7 @@ def home(request):
 
 
 def process_code(code):
-    python_path = sys.executable
+    python_path = sys.executable # fetches path to current Python interpreter being used (ACE Editor in this case)
     try:
         # Execute the code normally to capture stdout and stderr
         completed_process = subprocess.run(
@@ -25,20 +25,25 @@ def process_code(code):
         )
         # Handle errors and normal output
         if completed_process.stderr:
-            return "Error:\n" + completed_process.stderr
-        return completed_process.stdout
+            return "Error:\n" + completed_process.stderr, False
+        return completed_process.stdout, True
     except subprocess.CalledProcessError as e:
-        return f"An error occurred: {e.stderr}"
+        return f"An error occurred: {e.stderr}", False
     except subprocess.TimeoutExpired:
-        return "The code execution timed out."
+        return "The code execution timed out.", False
     except Exception as e:
-        return f"An unexpected error occurred: {str(e)}"
+        return f"An unexpected error occurred: {str(e)}", False
     
 
 def visualize(request):
     code = ""  # Default to empty if no POST request
     output = ""
+    success = False # Default to false
     if request.method == 'POST':
         code = request.POST.get('code')
         output = process_code(code)
-    return render(request, 'visualize.html', {'code': code, 'output': output})
+    # rendering response back to user KEEPS original input
+    # request: original HTTP request object
+    # context library {}: code is input which is retrieved, output: is result whether it be error or output
+    return render(request, 'visualize.html', {'code': code, 'output': output, 'success': success}) 
+    

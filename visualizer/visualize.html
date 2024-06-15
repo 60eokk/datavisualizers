@@ -45,7 +45,7 @@
             background-color: #272822; /* Monokai background color */
             color: #f8f8f2; /* Monokai text color */
         }
-        #executeButton {
+        #executeButton, #visualizeButton {
             width: 100%;
             padding: 10px 0;
             font-size: 16px;
@@ -58,7 +58,6 @@
             text-decoration: none;
         }
     </style>
-</head>
 <body>
     <header>
         <a href="/">Home</a>
@@ -68,6 +67,7 @@
         <div id="editorContainer">
             <div id="editor"></div>
             <button id="executeButton" onclick="submitCode();">Execute</button>
+            <button id="visualizeButton" onclick="visualizeCode();" disabled>Visualize</button>
         </div>
         <form id="codeForm" method="POST" action="" style="display: none;">
             {% csrf_token %}
@@ -86,6 +86,19 @@
         function submitCode() {
             document.getElementById('code').value = editor.getSession().getValue();
             document.forms["codeForm"].submit();
+        }
+
+        window.onload = function() {
+            var success = ({ success,safe });
+            if (success) {
+                document.getElementById('visualizeButton').disabled = false;
+            } else {
+                document.getElementById('visualizeButton').disabled = true;
+            }
+        }
+
+        function visualizeCode() {
+            // Additional functionality to visualize the code output
         }
     </script>
 </body>
