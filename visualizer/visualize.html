@@ -63,6 +63,7 @@
         <a href="/">Home</a>
         <a href="/other">Other Site</a>
     </header>
+    <div id="successFlag" style="display:none;" data-success="{{ success|yesno:'true,false' }}"></div>
     <div id="mainContent">
         <div id="editorContainer">
             <div id="editor"></div>
@@ -89,17 +90,19 @@
         }
 
         window.onload = function() {
-            var success = ({ success,safe });
-            if (success) {
-                document.getElementById('visualizeButton').disabled = false;
-            } else {
-                document.getElementById('visualizeButton').disabled = true;
-            }
-        }
+        var successElement = document.getElementById('successFlag');
+        var success = successElement.getAttribute('data-success') === 'true';
 
-        function visualizeCode() {
-            // Additional functionality to visualize the code output
+        if (success) {
+            document.getElementById('visualizeButton').disabled = false;
+        } else {
+            document.getElementById('visualizeButton').disabled = true;
         }
+    };
+
+    function visualizeCode() {
+        alert("Visualize done!");
+    }
     </script>
 </body>
 </html>
