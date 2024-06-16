@@ -100,9 +100,26 @@
         }
     };
 
-    function visualizeCode() {
-        alert("Visualize done!");
-    }
+        function visualizeCode() {
+            alert("Visualize done!");
+        }
+
+        function fetchAnimationFrames(code) {
+            fetch('/path-to-animation-endpoint/', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRFToken': getCookie('csrftoken')  // Ensure CSRF token is included for Django POST requests
+                },
+                body: JSON.stringify({ code: code })
+            })
+            .then(response => response.json())
+            .then(data => {
+                const frames = JSON.parse(data.frames);
+                startAnimation(frames);
+            })
+            .catch(error => console.error('Error loading animation frames:', error));
+        }
     </script>
 </body>
 </html>

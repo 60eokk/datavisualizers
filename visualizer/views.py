@@ -1,12 +1,20 @@
 from django.shortcuts import render, redirect
-from django.http import HttpResponse
+from django.http import HttpResponse, JsonResponse
 from django.template.response import SimpleTemplateResponse
 import subprocess # to execute code more safely
 import sys # import sys and use sys.executable to dynamically get the Python path
 import trace
 from io import StringIO
 import textwrap
-import ast
+from .animate import parse_code, gen_data, frames_tojson
+
+def animation_view(request):
+    """Handle requests to generate animations."""
+    code = request.POST.get('code', '')
+    ast_node = parse_code(code)
+    frames = gen_data(ast_node)
+    frames_json = frames_tojson(frames)
+    return JsonResponse({'frames': frames_json})
 
 
 def home(request):
