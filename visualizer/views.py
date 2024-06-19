@@ -8,6 +8,13 @@ from io import StringIO
 import textwrap
 from .animate import parse_code, gen_data, frames_tojson
 
+
+
+def home(request):
+    # return HttpResponse("Welcome to Code Visualizer!")
+    return render(request, 'home.html')
+
+
 def animation_view(request):
     """Handle requests to generate animations."""
     code = request.POST.get('code', '')
@@ -15,11 +22,6 @@ def animation_view(request):
     frames = gen_data(ast_node)
     frames_json = frames_tojson(frames)
     return JsonResponse({'frames': frames_json})
-
-
-def home(request):
-    # return HttpResponse("Welcome to Code Visualizer!")
-    return render(request, 'home.html')
 
 
 def process_code(code):

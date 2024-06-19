@@ -33,8 +33,6 @@ class DataGenerator(ast.NodeVisitor):
 
 
 
-
-
 def gen_data(ast_node):
     generator = DataGenerator()
     generator.visit(ast_node)
