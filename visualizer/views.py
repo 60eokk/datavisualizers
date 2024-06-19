@@ -35,9 +35,9 @@ def process_code(code):
         # Handle errors and normal output
         if completed_process.stderr:
             return "Error:\n" + completed_process.stderr, False
-        print("working")
-        return parse_code(code)
-        # return completed_process.stdout, True
+        # print("working")
+        # return parse_code(code)
+        return completed_process.stdout, True
     except subprocess.CalledProcessError as e:
         return f"An error occurred: {e.stderr}", False
     except subprocess.TimeoutExpired:
