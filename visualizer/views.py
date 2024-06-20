@@ -1,4 +1,4 @@
-from django.shortcuts import render, redirect
+from django.shortcuts import render
 from django.http import HttpResponse, JsonResponse
 from django.template.response import SimpleTemplateResponse
 import subprocess # to execute code more safely
@@ -15,30 +15,19 @@ def home(request):
     return render(request, 'home.html')
 
 
-def animation_view(request):
-    """Handle requests to generate animations."""
-    code = request.POST.get('code', '')
-    ast_node = parse_code(code)
-    frames = gen_data(ast_node)
-    frames_json = frames_tojson(frames)
-    return JsonResponse({'frames': frames_json})
-
-
 def process_code(code):
-    python_path = sys.executable # fetches path to current Python interpreter being used (ACE Editor in this case)
+    """ Execute Python code safely and capture stdout, stderr, and exit status. """
+    python_path = sys.executable  # Fetches path to current Python interpreter being used
     try:
-        # Execute the code normally to capture stdout and stderr
+        # Execute the code to capture stdout and stderr
         completed_process = subprocess.run(
             [python_path, "-c", code],
             text=True,
             capture_output=True,
             timeout=5
         )
-        # Handle errors and normal output
         if completed_process.stderr:
-            return "Error:\n" + completed_process.stderr, False
-        # print("working")
-        # return parse_code(code)
+            return completed_process.stderr, False
         return completed_process.stdout, True
     except subprocess.CalledProcessError as e:
         return f"An error occurred: {e.stderr}", False
@@ -46,17 +35,19 @@ def process_code(code):
         return "The code execution timed out.", False
     except Exception as e:
         return f"An unexpected error occurred: {str(e)}", False
-    
 
 def visualize(request):
-    code = ""  # Default to empty if no POST request
-    output = ""
-    success = False # Default to false
+    """ Handle requests to display the code visualization page. """
+    code = request.POST.get('code', '')
+    output, success = process_code(code) if request.method == 'POST' else ("", False)
+    return render(request, 'visualize.html', {'code': code, 'output': output, 'success': success})
+
+def animation_view(request):
+    """ Handle requests to generate animations from code. """
     if request.method == 'POST':
-        code = request.POST.get('code')
-        output = process_code(code)
-    # rendering response back to user KEEPS original input
-    # request: original HTTP request object
-    # context library {}: code is input which is retrieved, output: is result whether it be error or output
-    return render(request, 'visualize.html', {'code': code, 'output': output, 'success': success}) 
-    
+        code = request.POST.get('code', '')
+        ast_node = parse_code(code)
+        frames = gen_data(ast_node)
+        frames_json = frames_tojson(frames)
+        return JsonResponse({'frames': frames_json})
+    return JsonResponse({'error': 'Invalid request'}, status=400)
